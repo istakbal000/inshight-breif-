@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+
+  --color-secondary-900: #0f172a;
+  --color-surface: #1e293b;
+}
+
+@layer base {
+  body {
+    @apply bg-slate-950 text-slate-100 font-sans antialiased;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-slate-900/50 backdrop-blur-md border border-slate-700/50 rounded-2xl shadow-xl transition-all duration-300;
+  }
+  
+  .glass-card:hover {
+    @apply border-slate-600/50 shadow-blue-900/10 shadow-2xl;
+  }
+
+  .btn-primary {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-300 transform active:scale-95 flex items-center justify-center gap-2 bg-blue-600 text-white hover:bg-blue-500 shadow-lg shadow-blue-600/30 hover:shadow-blue-500/50;
+  }
+
+  .btn-secondary {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-300 transform active:scale-95 flex items-center justify-center gap-2 bg-slate-800 text-slate-200 hover:bg-slate-700 border border-slate-700;
+  }
+
+  .input-field {
+    @apply w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-300 placeholder-slate-500;
+  }
+  
+  /* Skeleton Loading Utilities */
+  .skeleton-box {
+    @apply bg-slate-800 animate-pulse rounded-xl;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
