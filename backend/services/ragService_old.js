@@ -1,10 +1,16 @@
-const { Ollama } = require('ollama');
+const Groq = require('groq-sdk');
 const { RecursiveCharacterTextSplitter } = require("langchain/text_splitter");
 const { GoogleGenerativeAIEmbeddings } = require("@langchain/google-genai");
 const { Chroma } = require("@langchain/community/vectorstores/chroma");
 const { MemoryVectorStore } = require("langchain/vectorstores/memory");
 
-const ollama = new Ollama({ host: process.env.OLLAMA_HOST || 'http://localhost:11434' });
+const getGroqClient = () => {
+  const apiKey = process.env.GROQ_API_KEY;
+  if (apiKey && apiKey.trim() && !apiKey.includes('your_')) {
+    return new Groq({ apiKey: apiKey.trim() });
+  }
+  return null;
+};
 
 let vectorStore;
 
@@ -75,16 +81,28 @@ const askQuestion = async (question) => {
       ${question}
     `;
 
-    const response = await ollama.generate({
-      model: process.env.OLLAMA_MODEL || 'llama3',
-      prompt: prompt,
-      options: {
-        temperature: 0.2,
-        num_predict: 2048,
-      },
+    const groq = getGroqClient();
+    if (!groq) {
+      throw new Error("GROQ_API_KEY is not configured.");
+    }
+
+    const response = await groq.chat.completions.create({
+      model: process.env.GROQ_MODEL || 'llama-3.3-70b-versatile',
+      messages: [
+        {
+          role: 'system',
+          content: "Answer the following question based ONLY on the provided context. If the answer cannot be found in the context, say 'I don't have enough information to answer that based on the current briefing sources.'"
+        },
+        {
+          role: 'user',
+          content: `Context:\n${context}\n\nQuestion:\n${question}`
+        }
+      ],
+      temperature: 0.2,
+      max_tokens: 1024
     });
     
-    const answerContent = response.response;
+    const answerContent = response.choices[0]?.message?.content?.trim() || "";
 
     // Deduplicate sources based on URL or title
     const uniqueSources = Array.from(new Set(sources.map(s => JSON.stringify(s)))).map(s => JSON.parse(s));

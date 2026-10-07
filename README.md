@@ -10,7 +10,7 @@ InsightBrief is an AI-powered news aggregation and briefing platform that genera
 - **Topic-Based Generation**: Generate briefings on any topic (startups, stock market, tech, etc.)
 
 ### 🤖 AI-Powered Insights
-- **Llama 3 Integration**: Local AI model via Ollama for privacy and no rate limits
+- **Groq LPU Acceleration**: High-speed cloud inference via Groq API (Llama 3.3 70B)
 - **Market Analysis**: AI generates impact analysis and market implications
 - **Contrarian Viewpoints**: Bullish, bearish, and neutral perspectives on news
 - **Predictive Analytics**: AI-driven forecasts and trend predictions
@@ -38,11 +38,11 @@ InsightBrief is an AI-powered news aggregation and briefing platform that genera
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   Frontend      │    │    Backend      │    │   AI Services   │
-│   (React)       │◄──►│   (Node.js)     │◄──►│   (Ollama)      │
+│   (React)       │◄──►│   (Node.js)     │◄──►│   (Groq API)    │
 │                 │    │                 │    │                 │
-│ • UI Components │    │ • REST API      │    │ • Llama 3       │
-│ • Auth Context  │    │ • JWT Auth      │    │ • Local Model   │
-│ • API Client    │    │ • Business Logic│    │ • No Rate Limits│
+│ • UI Components │    │ • REST API      │    │ • Llama 3.3 70B │
+│ • Auth Context  │    │ • JWT Auth      │    │ • Groq LPUs     │
+│ • API Client    │    │ • Business Logic│    │ • Sub-second Lat│
 └─────────────────┘    └─────────────────┘    └─────────────────┘
          │                       │                       │
          │                       │                       │
@@ -59,7 +59,7 @@ InsightBrief is an AI-powered news aggregation and briefing platform that genera
 
 ### Data Flow
 1. **News Fetching**: Backend fetches articles from News APIs
-2. **AI Processing**: Llama 3 analyzes and generates insights
+2. **AI Processing**: Llama 3.3 70B on Groq LPUs analyzes and generates insights
 3. **Content Indexing**: Articles are chunked and indexed for search
 4. **User Interaction**: Frontend displays briefings and handles Q&A
 5. **Storage**: MongoDB stores user data and briefing history
@@ -83,8 +83,8 @@ InsightBrief is an AI-powered news aggregation and briefing platform that genera
 - **Node-cron** - Task scheduling
 
 ### AI & ML Stack
-- **Ollama** - Local AI model server
-- **Llama 3** - Meta's open-source LLM
+- **Groq SDK** - High-speed cloud inference on Groq LPUs
+- **Llama 3** - Meta's open-source LLM hosted on Groq
 - **LangChain** - AI framework components
 - **Custom RAG** - Retrieval-Augmented Generation
 
@@ -173,7 +173,7 @@ ai-news-brifer/
 ### Prerequisites
 - **Node.js 18+** - JavaScript runtime
 - **MongoDB** - Database (local or Atlas)
-- **Ollama** - Local AI server: https://ollama.com
+- **Groq API Key** - Get free API key from https://console.groq.com/keys
 
 ### Installation & Setup
 
@@ -188,7 +188,7 @@ cd ai-news-brifer
 cd backend
 npm install --legacy-peer-deps
 cp .env.example .env
-# Edit .env with your configuration
+# Add your GROQ_API_KEY to backend/.env
 ```
 
 3. **Frontend Setup**
@@ -197,14 +197,7 @@ cd ../frontend
 npm install
 ```
 
-4. **Ollama Setup**
-```bash
-# Install Ollama (follow guide at ollama.com)
-ollama pull llama3
-ollama serve
-```
-
-5. **Start Application**
+4. **Start Application**
 ```bash
 # Terminal 1 - Backend
 cd backend
@@ -215,7 +208,7 @@ cd frontend
 npm run dev
 ```
 
-6. **Access Application**
+5. **Access Application**
 - Frontend: http://localhost:5173
 - Backend: http://localhost:5000
 
@@ -239,8 +232,8 @@ npm run dev
 |----------|-------------|---------|----------|
 | `PORT` | Backend server port | 5000 | No |
 | `MONGO_URI` | MongoDB connection string | mongodb://127.0.0.1:27017/insightbrief | Yes |
-| `OLLAMA_HOST` | Ollama server URL | http://localhost:11434 | No |
-| `OLLAMA_MODEL` | AI model name | llama3 | No |
+| `GROQ_API_KEY` | Groq API Key (get from console.groq.com) | - | Yes |
+| `GROQ_MODEL` | Groq model name | llama-3.3-70b-versatile | No |
 | `NEWS_API_KEY` | News API key | - | Optional |
 | `JWT_SECRET` | JWT signing secret | - | Yes |
 | `JWT_EXPIRES_IN` | Token lifetime | 7d | No |
@@ -250,17 +243,9 @@ npm run dev
 
 ### Common Issues
 
-**Ollama Connection Failed**
-```bash
-# Check if Ollama is running
-curl http://localhost:11434/api/tags
-
-# Start Ollama if not running
-ollama serve
-
-# Verify model is available
-ollama list
-```
+**Groq API Key Missing or Invalid**
+- Make sure `GROQ_API_KEY` is added in `backend/.env`
+- Verify key validity at https://console.groq.com/keys
 
 **MongoDB Connection Error**
 - Ensure MongoDB service is running
@@ -287,17 +272,13 @@ npm install
 4. Add tests if applicable
 5. Submit a pull request
 
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ## 🙏 Acknowledgments
 
+- **Groq** for high-speed LPU inference engine
 - **Meta AI** for Llama 3 model
-- **Ollama** for local AI infrastructure
 - **NewsData.io & NewsAPI.org** for news data
 - **LangChain** for AI framework components
 
 ---
 
-Built with ❤️ using modern web technologies and local AI infrastructure.
+Built with ❤️ using modern web technologies and Groq AI inference.

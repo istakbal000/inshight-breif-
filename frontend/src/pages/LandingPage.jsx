@@ -33,7 +33,7 @@ const LandingPage = () => {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
             </span>
-            New: Gemini 2.5 Intelligence Engine
+             AI Intelligence Engine
           </div>
           
           <h1 className="text-6xl md:text-8xl font-black mb-8 leading-[1.1] tracking-tighter">
@@ -90,7 +90,7 @@ const LandingPage = () => {
 
       {/* Footer */}
       <footer className="py-20 border-t border-white/5 px-6 text-center text-gray-500 text-sm">
-        <p>&copy; 2026 InsightBrief Intelligence. Powered by Gemini 2.5.</p>
+        <p>&copy; 2026 InsightBrief Intelligence. Powered by Groq LPUs & Llama 3.</p>
       </footer>
     </div>
   );
