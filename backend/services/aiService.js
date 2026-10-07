@@ -94,6 +94,9 @@ ${articleContent}
 
     rawContent = rawContent.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
     const parsed = JSON.parse(rawContent);
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+      throw new Error('Groq returned a non-object JSON response');
+    }
     console.log('[aiService] Successfully generated insights via Groq API.');
     return normalizeInsightResponse(parsed, userInterests);
   } catch (error) {
